@@ -74,9 +74,12 @@
         <ul>
             {% for task in tasks %}
                 <li>
-                    {{ task }}
+                    {{ task['task'] }} (Priority: {{ task['priority'] }})
+                    {% if task['due_date'] %}
+                        <span class="due-date">Due: {{ task['due_date'].strftime('%Y-%m-%d') }}</span>
+                    {% endif %}
                     <form action="/complete_task" method="post">
-                        <input type="hidden" name="task" value="{{ task }}">
+                        <input type="hidden" name="task" value="{{ task['task'] }}">
                         <button type="submit">Complete</button>
                     </form>
                 </li>
@@ -84,6 +87,12 @@
         </ul>
         <form action="/add_task" method="post">
             <input type="text" name="task" placeholder="Add a new task" required>
+            <select name="priority" required>
+                <option value="1">High</option>
+                <option value="2">Medium</option>
+                <option value="3">Low</option>
+            </select>
+            <input type="date" name="due_date">
             <button type="submit">Add</button>
         </form>
     </div>
